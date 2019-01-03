@@ -3,7 +3,7 @@
 import psycopg2
 
 DBNAME = "news"
-POPULAR_ARTICLES = "SELECT a.title, COUNT(l.*) AS views FROM log l JOIN articles a ON CONCAT('/article/',a.slug) = l.path WHERE l.status = '200 OK' GROUP BY l.path, a.title ORDER BY views DESC;"
+POPULAR_ARTICLES = "SELECT a.title, COUNT(l.*) AS views FROM log l JOIN articles a ON CONCAT('/article/',a.slug) = l.path WHERE l.status = '200 OK' GROUP BY l.path, a.title ORDER BY views DESC LIMIT 3;"
 POPULAR_AUTHORS = "SELECT t.name, COUNT(l.*) AS views FROM log l JOIN articles a ON CONCAT('/article/',a.slug) = l.path JOIN authors t ON a.author = t.id WHERE l.status = '200 OK' GROUP BY t.name ORDER BY views DESC;"
 ERROR_PCT = "WITH TOTAL AS (SELECT DATE(l.time) AS day, count(l.*) FROM log l GROUP BY DATE(l.time) ORDER BY DATE(l.time)), ERRORS AS (SELECT DATE(l.time) AS day, count(l.*) FROM log l WHERE l.status != '200 OK' GROUP BY DATE(l.time) ORDER BY DATE(l.time)), PCT AS (SELECT TOTAL.day, ERRORS.count::NUMERIC / TOTAL.count::NUMERIC * 100 AS ERROR_PCT FROM TOTAL, ERRORS WHERE TOTAL.day = ERRORS.day) SELECT day, TRUNC(ERROR_PCT, 2) FROM PCT WHERE ERROR_PCT > 1 ORDER BY ERROR_PCT;"
 

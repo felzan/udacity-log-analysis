@@ -10,11 +10,6 @@ This will print out the questions from the report
 Candidate is jerk, alleges rival — 338,647 views.
 Bears love berries, alleges bear — 253,801 views.
 Bad things gone, say good people — 170,098 views.
-Goats eat Google's lawn — 84,906 views.
-Trouble for troubled troublemakers — 84,810 views.
-Balloon goons doomed — 84,557 views.
-There are a lot of bears — 84,504 views.
-Media obsessed with bears — 84,383 views.
 
 
 2. Who are the most popular article authors of all time?
