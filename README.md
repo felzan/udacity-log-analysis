@@ -1,5 +1,5 @@
-##Running
-###To run this project you just need to run with Python3
+## Running
+### To run this project you just need to run with Python3
 ```
 python3 log-analysis.py
 ```
