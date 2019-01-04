@@ -45,7 +45,7 @@ FROM PCT
 
 def executeQuery(query):
     conn = psycopg2.connect(
-        dbname = DBNAME)
+        dbname=DBNAME)
     cursor = conn.cursor()
     cursor.execute(query)
     results = cursor.fetchall()
