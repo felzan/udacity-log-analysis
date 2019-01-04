@@ -3,6 +3,7 @@
 import psycopg2
 
 DBNAME = "news"
+
 POPULAR_ARTICLES = """
 SELECT a.title, COUNT(l.*) AS views
 FROM log l
@@ -31,7 +32,7 @@ WITH
         GROUP BY DATE(l.time)
         ORDER BY DATE(l.time)),
     PCT AS (SELECT TOTAL.day,
-        ERRORS.count: :NUMERIC / TOTAL.count : :NUMERIC * 100 AS ERROR_PCT
+        ERRORS.count::NUMERIC / TOTAL.count ::NUMERIC * 100 AS ERROR_PCT
         FROM TOTAL,
         ERRORS
         WHERE TOTAL.day = ERRORS.day)
@@ -42,47 +43,47 @@ FROM PCT
 """
 
 
-def getMostPopularArticles():
-    conn = psycopg2.connect("dbname="+DBNAME)
+def executeQuery(query):
+    conn = psycopg2.connect(
+        dbname = DBNAME)
     cursor = conn.cursor()
-    cursor.execute(POPULAR_ARTICLES)
+    cursor.execute(query)
     results = cursor.fetchall()
     conn.close()
     return results
+
+
+def getMostPopularArticles():
+    """Get the three most popular articles and the amount of views."""
+    return executeQuery(POPULAR_ARTICLES)
 
 
 def getMostPopularAuthors():
-    conn = psycopg2.connect("dbname="+DBNAME)
-    cursor = conn.cursor()
-    cursor.execute(POPULAR_AUTHORS)
-    results = cursor.fetchall()
-    conn.close()
-    return results
+    """Get the autors and sum of views of your articles,
+     sorted by the amount of views."""
+    return executeQuery(POPULAR_AUTHORS)
 
 
 def getErrorPercentile():
-    conn = psycopg2.connect("dbname="+DBNAME)
-    cursor = conn.cursor()
-    cursor.execute(ERROR_PCT)
-    results = cursor.fetchall()
-    conn.close()
-    return results
+    """Show which days has more than 1% of
+     errors and the percentage of error."""
+    return executeQuery(ERROR_PCT)
 
 
 def main():
     print("1. What are the most popular three articles of all time?\n")
-    for row in getMostPopularArticles():
-        print((row[0]) + " — " + '{:,}'.format(row[1]) + " views.")
+    for title, views in getMostPopularArticles():
+        print('{} - {:,} views.'.format(title, views))
 
     print("\n")
     print("2. Who are the most popular article authors of all time?\n")
-    for row in getMostPopularAuthors():
-        print((row[0]) + " — " + '{:,}'.format(row[1]) + " views.")
+    for author, views in getMostPopularAuthors():
+        print('{} - {:,} views.'.format(author, views))
 
     print("\n")
     print("3. On which days did more than 1% of requests lead to errors?\n")
-    for row in getErrorPercentile():
-        print((str(row[0])) + " — " + str(row[1]) + "% errors.")
+    for day, error_pct in getErrorPercentile():
+        print('{} - {:,}% errors.'.format(day, error_pct))
 
 
 if __name__ == '__main__':
