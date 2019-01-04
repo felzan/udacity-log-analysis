@@ -23,10 +23,10 @@ Quit the PSQL CLI with the following command or by `Ctrl+d`
 ```
 \q
 ```
-Now that you created the database you need to recover the data from de dump file
+Now that you created the database you need to recover the data from dump file
 
 Download the dump file [here](https://d17h27t6h515a5.cloudfront.net/topher/2016/August/57b5f748_newsdata/newsdata.zip)
-Extract the file and on Terminal change to the extracted file folder and run this 
+Extract the file and on Terminal. Change directory to the extracted file folder and run this 
 ```
 psql -d news -f newsdata.sql
 ```
